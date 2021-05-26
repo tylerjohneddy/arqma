@@ -22,7 +22,7 @@ jobs:
       with:
         submodules: recursive
     - name: build
-      run: make depends target=x86_64-linux-gnu -j
+      run: make depends target=x86_64-linux-gnu -j1
     - name: upload
       uses: actions/upload-artifact@master
       with:
