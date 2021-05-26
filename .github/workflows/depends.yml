@@ -1,6 +1,6 @@
 name: ci/gh-actions/depends
 
-on: [push, pull_request]
+on: [release]
 
 jobs:
   build-macos:
