@@ -18,14 +18,52 @@ jobs:
       run: sudo apt-get install libgtest-dev && cd /usr/src/gtest && sudo cmake . && sudo make && ls lib/ && sudo mv lib/libg* /usr/lib/
     - name: install dependencies
       run: sudo apt update && sudo apt install --yes git build-essential curl cmake pkg-config libboost-all-dev libssl-dev libsodium-dev libunwind8-dev liblzma-dev libldns-dev libexpat1-dev doxygen graphviz libudev-dev libusb-1.0-0-dev libhidapi-dev xsltproc gperf autoconf automake libtool-bin
+    - name: os spesific deps
+      run: sudo apt install python3 g++-mingw-w64-x86-64 wine1.6 bc cmake imagemagick libcap-dev librsvg2-bin libz-dev libbz2-dev libtiff-tools curl bsdmainutils python3-setuptools g++-arm-linux-gnueabihf g++-aarch64-linux-gnu
     - uses: actions/checkout@v1
       with:
         submodules: recursive
-    - name: build
+    - name: build-linux
       run: make depends target=x86_64-linux-gnu -j1
-    - name: upload
+
+    - name: build-windows
+      run: make depends target=x86_64-w64-mingw32 -j1
+    - name: build-macos
+      run: make depends target=x86_64-apple-darwin19.2.0 -j1
+    - name: build-arm7
+      run: make depends target=arm-linux-gnueabihf -j1
+    - name: build-arm8
+      run: make depends target=aarch64-linux-gnu -j1
+    
+    
+    
+    - name: upload-linux
       uses: actions/upload-artifact@master
       with:
-        name: linux-compat
-        path: 'build/x86_64-linux-gnu-compat/release/bin/gntl*'
+        name: linux-cross-compile
+        path: 'build/x86_64-linux-gnu/release/bin/a*'
+        
+    - name: upload-windows
+      uses: actions/upload-artifact@master
+      with:
+        name: windows-cross-compile
+        path: 'build/x86_64-w64-mingw32/release/bin/a*'
+
+    - name: upload-macos
+      uses: actions/upload-artifact@master
+      with:
+        name: macos-cross-compile
+        path: 'build/x86_64-apple-darwin19.2.0/release/bin/a*'
+    - name: upload-arm7
+      uses: actions/upload-artifact@master
+      with:
+        name: arm7-cross-compile
+        path: 'build/arm-linux-gnueabihf/release/bin/a*'
+
+    - name: upload-arm8
+      uses: actions/upload-artifact@master
+      with:
+        name: arm8-cross-compile
+        path: 'build/aarch64-linux-gnu/release/bin/a*'
+      
       
