@@ -1,7 +1,7 @@
 
 name: continuous-integration/gh-actions/cli
 
-on: [release]
+on: [push]
 
 jobs:
   build-all:
