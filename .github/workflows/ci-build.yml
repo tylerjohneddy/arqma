@@ -15,7 +15,7 @@ jobs:
     - name: update apt
       run: sudo apt update
     - name: build libgtest-dev
-      run: sudo apt-get install libgtest-dev && cd /usr/src/gtest && sudo cmake . && sudo make && ls lib/ && sudo mv libg* /usr/lib/
+      run: sudo apt-get install libgtest-dev && cd /usr/src/gtest && sudo cmake . && sudo make && sudo mv libg* /usr/lib/
     - name: install dependencies
       run: sudo apt update && sudo apt install --yes git build-essential curl cmake pkg-config libboost-all-dev libssl-dev libsodium-dev libunwind8-dev liblzma-dev libldns-dev libexpat1-dev doxygen graphviz libudev-dev libusb-1.0-0-dev libhidapi-dev xsltproc gperf autoconf automake libtool-bin
     - name: os spesific deps
