@@ -1,0 +1,25 @@
+
+name: continuous-integration/gh-actions/cli
+
+on: [push, pull_request]
+
+jobs:
+  build-all:
+    runs-on: ubuntu-latest
+    steps:
+    - name: set apt conf
+      run: |
+        echo "Acquire::Retries \"3\";" | sudo tee -a /etc/apt/apt.conf.d/80-custom
+        echo "Acquire::http::Timeout \"120\";" | sudo tee -a /etc/apt/apt.conf.d/80-custom
+        echo "Acquire::ftp::Timeout \"120\";" | sudo tee -a /etc/apt/apt.conf.d/80-custom
+    - name: update apt
+      run: sudo apt update
+    - name: build libgtest-dev
+      run: sudo apt-get install libgtest-dev && cd /usr/src/gtest && sudo cmake . && sudo make && sudo mv libg* /usr/lib/
+    - name: install dependencies
+      run: sudo apt update && sudo apt install --yes git build-essential curl cmake pkg-config libboost-all-dev libssl-dev libsodium-dev libunwind8-dev liblzma-dev libreadline8-dev libldns-dev libexpat1-dev doxygen graphviz libudev-dev libusb-1.0-0-dev libhidapi-dev xsltproc gperf autoconf automake libtool-bin
+    - uses: actions/checkout@v1
+      with:
+        submodules: recursive
+    - name: build
+      run: make depends target=x86_64-linux-gnu -j2
