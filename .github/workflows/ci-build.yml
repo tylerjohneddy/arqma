@@ -22,4 +22,10 @@ jobs:
       with:
         submodules: recursive
     - name: build
-      run: make depends target=x86_64-linux-gnu -j2
+      run: make depends target=x86_64-linux-gnu -j
+    - name: upload
+      uses: actions/upload-artifact@master
+      with:
+        name: linux-compat
+        path: 'build/x86_64-linux-gnu-compat/release/bin/gntl*'
+      
